@@ -17,14 +17,18 @@
             self::$i++;
         }
         public function getCounter(){
-            echo self::$i. " veces a rugido el Tigre";
+            echo self::$i. " veces han rugido los tigres";
 
         }
     }
 
-    $tigre = Tigger::getInstance();
+    $tigre1 = Tigger::getInstance();
+    $tigre2 = Tigger::getInstance();
     for ($j = 0; $j < 170; $j++){
-        $tigre->roar();
+        $tigre1->roar();
+        if ($j > 30){
+            $tigre2->roar();   
+        }
     }
-    $tigre->getCounter();
+    $tigre1->getCounter();
 ?>
