@@ -1,4 +1,5 @@
-Strategy
+<?php
+/*Strategy
 
 Penseu en la següent funció simple amb el nom couponGenerator que genera diferents cupons per a diferents tipus d'automòbils. Per a aquells que estan interessats en comprar un BMW ofereix un cupó diferent a el d'aquells que estiguin interessats en comprar un Mercedes.
 
@@ -36,8 +37,8 @@ Ja que els cupons varien d'acord a cada tipus d'automòbil, l'ideal seria convoc
 
 De fet, com els mètodes anteriors per a cada cupó tenen el mateix nom; és necessari crear la interfície carCouponGenerator que obligui a totes les classes que la implementin a utilitzar-los, incloses les que acabem d'escriure i les que ens agradaria afegir en el futur.
 
-Imprimeix per pantalla el resultat de l'cupó per a les dues marques de cotxe (BMW i Mercedes).
-<?php
+Imprimeix per pantalla el resultat de l'cupó per a les dues marques de cotxe (BMW i Mercedes).*/
+
   interface carCouponGenerator { //strategy
     public function addSeasonDiscount();
     public function addStockDiscount();
@@ -45,11 +46,13 @@ Imprimeix per pantalla el resultat de l'cupó per a les dues marques de cotxe (B
 
   class couponGenerator {
     private $strategy;
-    public $discount = 0;
-    public $isHighSeason = false;
-    public $bigStock = true;
+    
     public function __construct(carCouponGenerator $strategy){
-      $this->strategy =$strategy;
+      $this->strategy = $strategy;
+    }
+
+    public function setStrategy(carCouponGenerator $strategy){
+      $this->strategy = $strategy;
     }
     public function handle() {
       $this->strategy->addSeasonDiscount();
@@ -57,27 +60,48 @@ Imprimeix per pantalla el resultat de l'cupó per a les dues marques de cotxe (B
     }
   }
   class bmwCouponGenerator implements carCouponGenerator {
+    public $discount = 0;
+    public $isHighSeason = false;
+    public $bigStock = true;
     public function addSeasonDiscount() {
-      if (!$isHighSeason) {$discount += 5;}
+      if(!$this->isHighSeason) {
+        $this->discount += 5;
+        echo "el descuento es del {$this->discount}% cuando haya recesión.<br>";
+      }
     }
     public function addStockDiscount() {
-      if ($bigStock) {$discount += 7;}
+      if ($this->bigStock) {
+        $this->discount += 7;
+        echo "el descuento es del {$this->discount}% cuando haya a la vez un gran stock.<br>";
+      }
     }
   }
 
   class mercedesCouponGenerator implements carCouponGenerator {
+    public $discount = 0;
+    public $isHighSeason = false;
+    public $bigStock = true;
     public function addSeasonDiscount() {
-      if (!$isHighSeason) {$discount += 4;}
+      if (!$this->isHighSeason) {$this->discount += 4;}
+      echo "el descuento es del {$this->discount}% cuando haya recesión.<br>";
     }
     public function addStockDiscount() {
-      if ($bigStock) {$discount += 10;}
+      if ($this->bigStock) {
+        $this->discount += 10;
+        echo "el descuento es del {$this->discount}% cuando haya a la vez un gran stock.<br>";
+      }
     }
   }
 
+  //llamada del cliente
+
   $cd = new couponGenerator(new bmwCouponGenerator());
-  echo "Los clientes pueden disfutar de un:";
+  echo "Los clientes de BMW pueden disfutar de un:<br>";
   $cd->handle();
 
+  $cd->setStrategy(new mercedesCouponGenerator());
+  echo "Los clientes de Mercedes pueden disfrutar de un:<br>";
+  $cd->handle();
 
 
 ?>
