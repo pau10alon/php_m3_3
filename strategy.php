@@ -74,4 +74,10 @@ Imprimeix per pantalla el resultat de l'cupó per a les dues marques de cotxe (B
     }
   }
 
+  $cd = new couponGenerator(new bmwCouponGenerator());
+  echo "Los clientes pueden disfutar de un:";
+  $cd->handle();
+
+
+
 ?>
